@@ -4,12 +4,13 @@ import { getUsers } from "@/actions/user";
 import AppLayout from "@/components/app-layout";
 import { Card, CardBody, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import type { User } from "@prisma/client";
+import type { Prisma, User } from "@prisma/client";
 import type { Booking } from "@prisma/client";
 import type { Studio } from "@prisma/client";
 import { getBookings } from "@/actions/bookings";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { getStudios } from "@/actions/studios";
+import { MoviePerformance, getMoviePerformance } from "@/actions/stats";
 
 const data = [
   {
@@ -60,6 +61,7 @@ export default function Dashboard() {
   const [users, setUsers] = useState<User[]>([] as User[]);
   const [bookings, setBookings] = useState<Booking[]>([] as Booking[]);
   const [studios, setStudios] = useState<Studio[]>([] as Studio[]);
+  const [moviePerformance, setMoviePerformance] = useState<MoviePerformance[]>([] as MoviePerformance[]);
   const numUsers = users.length;
   const numBookings = bookings.length;
   const revenue = bookings.reduce((acc, cur) => acc + cur.totalAmount, 0);
@@ -70,23 +72,26 @@ export default function Dashboard() {
       const users = await getUsers();
       const bookings = await getBookings();
       const studios = await getStudios();
+      const performance = await getMoviePerformance();
       setUsers(users);
       setBookings(bookings);
       setStudios(studios);
+      setMoviePerformance(performance);
     }
     fetchData();
   }, []);
 
-  // const content = bookings.length > 0 ? bookings.map((booking, i) => (
-  //   <TableRow key={i + 1}>
-  //               <TableCell>{i + 1}</TableCell>
-  //               <TableCell>Technical Lead</TableCell>
-  //               <TableCell>Paused</TableCell>
-  //               <TableCell>0</TableCell>
-  //             </TableRow>
-  // )) : null
-
-  console.log(bookings);
+  const content =
+    moviePerformance.length > 0
+      ? moviePerformance.map((movie, i) => (
+          <TableRow key={i + 1}>
+            <TableCell>{i + 1}</TableCell>
+            <TableCell>{movie._id}</TableCell>
+            <TableCell>{movie.totalBooking}</TableCell>
+            <TableCell className="text-[#0070f0]">&cent;{movie.values}</TableCell>
+          </TableRow>
+        ))
+      : [];
 
   return (
     <AppLayout>
@@ -142,32 +147,7 @@ export default function Dashboard() {
               <TableColumn>BUYERS</TableColumn>
               <TableColumn>VALUES</TableColumn>
             </TableHeader>
-            <TableBody>
-              <TableRow key="1">
-                <TableCell>Tony Reichert</TableCell>
-                <TableCell>CEO</TableCell>
-                <TableCell>Active</TableCell>
-                <TableCell>0</TableCell>
-              </TableRow>
-              <TableRow key="2">
-                <TableCell>Zoey Lang</TableCell>
-                <TableCell>Technical Lead</TableCell>
-                <TableCell>Paused</TableCell>
-                <TableCell>0</TableCell>
-              </TableRow>
-              <TableRow key="3">
-                <TableCell>Jane Fisher</TableCell>
-                <TableCell>Senior Developer</TableCell>
-                <TableCell>Active</TableCell>
-                <TableCell>0</TableCell>
-              </TableRow>
-              <TableRow key="4">
-                <TableCell>William Howard</TableCell>
-                <TableCell>Community Manager</TableCell>
-                <TableCell>Vacation</TableCell>
-                <TableCell>0</TableCell>
-              </TableRow>
-            </TableBody>
+            <TableBody emptyContent={!!moviePerformance}>{content}</TableBody>
           </Table>
         </section>
       </div>

@@ -2,15 +2,20 @@
 
 import { getUsers } from "@/actions/user";
 import AppLayout from "@/components/app-layout";
-import { Card, CardBody, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { Button, Card, CardBody, CardFooter, Chip, Divider, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import type { Prisma, User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import type { Booking } from "@prisma/client";
 import type { Studio } from "@prisma/client";
 import { getBookings } from "@/actions/bookings";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { getStudios } from "@/actions/studios";
 import { MoviePerformance, getMoviePerformance } from "@/actions/stats";
+import { HiEllipsisVertical } from "react-icons/hi2";
+import { HiBanknotes } from "react-icons/hi2";
+import { HiMiniFilm } from "react-icons/hi2";
+import { HiIdentification } from "react-icons/hi2";
+import { BsGoogle } from "react-icons/bs";
 
 const data = [
   {
@@ -100,27 +105,59 @@ export default function Dashboard() {
         <section className="grid grid-cols-2 gap-6 items-start">
           <div className="grid grid-cols-2">
             <Card className="rounded-none rounded-tl-lg">
-              <CardBody>
-                <p className="text-sm">Users</p>
-                <span className="font-semibold">{numUsers}</span>
+              <CardBody className="flex flex-col gap-1">
+                <p className="text-sm flex justify-between">
+                  Users
+                  <Button size="sm" isIconOnly aria-label="More">
+                    <HiEllipsisVertical />
+                  </Button>
+                </p>
+                <span className="font-semibold mb-1">{numUsers}</span>
+                <Chip size="sm" color="primary">
+                  +22%
+                </Chip>
               </CardBody>
             </Card>
             <Card className="rounded-none rounded-tr-lg">
-              <CardBody>
-                <p className="text-sm">Bookings</p>
-                <span className="font-semibold">{numBookings}</span>
+              <CardBody className="flex flex-col gap-1">
+                <p className="text-sm flex justify-between">
+                  Bookings
+                  <Button size="sm" isIconOnly aria-label="More">
+                    <HiEllipsisVertical />
+                  </Button>
+                </p>
+                <span className="font-semibold mb-1">{numBookings}</span>
+                <Chip size="sm" color="primary">
+                  +21%
+                </Chip>
               </CardBody>
             </Card>
             <Card className="rounded-none rounded-bl-lg">
-              <CardBody>
-                <p className="text-sm">Revenue</p>
-                <span className="font-semibold">${revenue}</span>
+              <CardBody className="flex flex-col gap-1">
+                <p className="text-sm flex justify-between">
+                  Revenue
+                  <Button size="sm" isIconOnly aria-label="More">
+                    <HiEllipsisVertical />
+                  </Button>
+                </p>
+                <span className="font-semibold mb-1">${revenue}</span>
+                <Chip size="sm" color="primary">
+                  +12.6%
+                </Chip>
               </CardBody>
             </Card>
             <Card className="rounded-none rounded-br-lg">
-              <CardBody>
-                <p className="text-sm">Studios</p>
-                <span className="font-semibold">{numStudios}</span>
+              <CardBody className="flex flex-col gap-1">
+                <p className="text-sm flex justify-between">
+                  Studios
+                  <Button size="sm" isIconOnly aria-label="More">
+                    <HiEllipsisVertical />
+                  </Button>
+                </p>
+                <span className="font-semibold mb-1">{numStudios}</span>
+                <Chip size="sm" color="primary">
+                  +15.2%
+                </Chip>
               </CardBody>
             </Card>
           </div>
@@ -130,9 +167,9 @@ export default function Dashboard() {
               <LineChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
-                <YAxis />
+                <YAxis tickFormatter={(val) => `¢${val}`} />
                 <Tooltip />
-                <Line type="monotone" dataKey="revenue" stroke="#0070f0" activeDot={{ r: 8 }} />
+                <Line type="monotone" dataKey="revenue" unit="¢" stroke="#0070f0" activeDot={{ r: 8 }} />
                 <Line type="monotone" dataKey="bookings" stroke="#f472b6" />
               </LineChart>
             </ResponsiveContainer>
@@ -149,6 +186,43 @@ export default function Dashboard() {
             </TableHeader>
             <TableBody emptyContent={!!moviePerformance}>{content}</TableBody>
           </Table>
+        </section>
+        <section className="flex flex-col gap-4">
+          <h2 className="font-semibold text-lg">Recent Activities</h2>
+          <Card>
+            <CardBody className="flex flex-row gap-4">
+              <HiBanknotes className="bg-gray-100 p-2 rounded-md" size={48} color="green" />
+              <div>
+                <h3 className="font-semibold">A user has just purchased a ticket</h3>
+                <p className="text-sm">Kenneth Matthew just bought tickets for the film Ancika: Dia yang Bersamaku 1995</p>
+              </div>
+            </CardBody>
+            <Divider />
+            <CardFooter className="flex justify-between items-center text-sm">
+              <p className="flex gap-1 items-center">
+                <HiMiniFilm size={20} color="orange" />
+                Studio
+              </p>
+              <span>1 mins ago</span>
+            </CardFooter>
+          </Card>
+          <Card>
+            <CardBody className="flex flex-row gap-4">
+              <HiIdentification className="bg-gray-100 p-2 rounded-md" size={48} color="blue" />
+              <div>
+                <h3 className="font-semibold">New user has been registered</h3>
+                <p className="text-sm">A new user named Madelyn Port has registered</p>
+              </div>
+            </CardBody>
+            <Divider />
+            <CardFooter className="flex justify-between items-center text-sm">
+              <p className="flex gap-1 items-center">
+                <BsGoogle size={16} />
+                Google
+              </p>
+              <span>22 mins ago</span>
+            </CardFooter>
+          </Card>
         </section>
       </div>
     </AppLayout>

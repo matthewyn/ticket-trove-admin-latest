@@ -2,17 +2,18 @@
 
 import AppLayout from "@/components/app-layout";
 import { paths } from "@/paths";
-import { BreadcrumbItem, Breadcrumbs, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs, Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import type { Movie } from "@prisma/client";
 import { deleteMovie, deleteMovies, getMovies } from "@/actions/movies";
 import MovieRatings from "@/components/movie-ratings";
-import { HiTrash } from "react-icons/hi2";
+import { HiMiniPlus, HiTrash } from "react-icons/hi2";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function Movies() {
   const [movies, setMovies] = useState<Movie[]>([] as Movie[]);
-  const [selectedKeys, setSelectedKeys] = useState<Set<string | number> | "all">(new Set(["2"]));
+  const [selectedKeys, setSelectedKeys] = useState<Set<string | number> | "all">(new Set([]));
   const isAll = Array.from(selectedKeys).length === movies.length;
 
   useEffect(function () {
@@ -29,6 +30,11 @@ export default function Movies() {
     toast.success("Success deleting movies");
   }
 
+  async function handleDelete(id: string) {
+    await deleteMovie(id);
+    window.location.reload();
+  }
+
   const content =
     movies.length > 0
       ? movies.map((movie, i) => (
@@ -39,7 +45,7 @@ export default function Movies() {
               <MovieRatings rating={movie.ratingsAverage} />
             </TableCell>
             <TableCell>
-              <HiTrash size={16} onClick={() => deleteMovie(movie.id)} />
+              <HiTrash size={16} onClick={() => handleDelete(movie.id)} className="cursor-pointer" />
             </TableCell>
           </TableRow>
         ))
@@ -52,7 +58,12 @@ export default function Movies() {
           <BreadcrumbItem href={paths.dashboard()}>Dashboard</BreadcrumbItem>
           <BreadcrumbItem>Movies</BreadcrumbItem>
         </Breadcrumbs>
-        <h1 className="text-2xl font-bold">Movies</h1>
+        <div className="flex justify-between">
+          <h1 className="text-2xl font-bold">Movies</h1>
+          <Button color="primary" startContent={<HiMiniPlus />} size="sm" as={Link} href={paths.createMovie()}>
+            Add new movie
+          </Button>
+        </div>
         <Table color="primary" selectionMode="multiple" selectedKeys={selectedKeys} aria-label="Movie table" onSelectionChange={setSelectedKeys}>
           <TableHeader>
             <TableColumn>TITLE</TableColumn>

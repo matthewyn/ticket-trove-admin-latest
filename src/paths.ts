@@ -5,4 +5,7 @@ export const paths = {
   movies() {
     return "/movies";
   },
+  createMovie() {
+    return "/movies/create";
+  },
 };

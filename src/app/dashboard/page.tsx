@@ -2,7 +2,7 @@
 
 import { getUsers } from "@/actions/user";
 import AppLayout from "@/components/app-layout";
-import { Button, Card, CardBody, CardFooter, Chip, Divider, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { Button, Card, CardBody, CardFooter, Chip, Divider, Snippet, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import type { User } from "@prisma/client";
 import type { Booking } from "@prisma/client";
@@ -16,6 +16,9 @@ import { HiBanknotes } from "react-icons/hi2";
 import { HiMiniFilm } from "react-icons/hi2";
 import { HiIdentification } from "react-icons/hi2";
 import { BsGoogle } from "react-icons/bs";
+import { HiMiniRocketLaunch } from "react-icons/hi2";
+import Image from "next/image";
+import streaming from "/public/streaming.svg";
 
 const data = [
   {
@@ -103,63 +106,82 @@ export default function Dashboard() {
       <div className="flex flex-col gap-8">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <section className="grid grid-cols-2 gap-6 items-start">
-          <div className="grid grid-cols-2">
-            <Card className="rounded-none rounded-tl-lg">
-              <CardBody className="flex flex-col gap-1">
-                <p className="text-sm flex justify-between">
-                  Users
-                  <Button size="sm" isIconOnly aria-label="More">
-                    <HiEllipsisVertical />
-                  </Button>
-                </p>
-                <span className="font-semibold mb-1">{numUsers}</span>
-                <Chip size="sm" color="primary">
-                  +22%
-                </Chip>
+          <div className="flex flex-col gap-4">
+            <Card>
+              <CardBody className="flex flex-col gap-4 relative">
+                <div className="flex gap-1 items-center text-sm">
+                  <HiMiniRocketLaunch color="red" />
+                  <span className="font-bold ml-1">Upcoming Movies!</span>
+                  <span>See the list below</span>
+                </div>
+                <div>
+                  <h2 className="font-bold">Dive into the Exciting World of Upcoming Movies!</h2>
+                  <p className="text-sm">(Prepare for The Exitement)</p>
+                </div>
+                <p>Let&apos;s take a sneak peek at some of the most anticipated films hitting the big screen soon:</p>
+                <div>
+                  <Snippet>npm run dev</Snippet>
+                </div>
               </CardBody>
             </Card>
-            <Card className="rounded-none rounded-tr-lg">
-              <CardBody className="flex flex-col gap-1">
-                <p className="text-sm flex justify-between">
-                  Bookings
-                  <Button size="sm" isIconOnly aria-label="More">
-                    <HiEllipsisVertical />
-                  </Button>
-                </p>
-                <span className="font-semibold mb-1">{numBookings}</span>
-                <Chip size="sm" color="primary">
-                  +21%
-                </Chip>
-              </CardBody>
-            </Card>
-            <Card className="rounded-none rounded-bl-lg">
-              <CardBody className="flex flex-col gap-1">
-                <p className="text-sm flex justify-between">
-                  Revenue
-                  <Button size="sm" isIconOnly aria-label="More">
-                    <HiEllipsisVertical />
-                  </Button>
-                </p>
-                <span className="font-semibold mb-1">${revenue}</span>
-                <Chip size="sm" color="primary">
-                  +12.6%
-                </Chip>
-              </CardBody>
-            </Card>
-            <Card className="rounded-none rounded-br-lg">
-              <CardBody className="flex flex-col gap-1">
-                <p className="text-sm flex justify-between">
-                  Studios
-                  <Button size="sm" isIconOnly aria-label="More">
-                    <HiEllipsisVertical />
-                  </Button>
-                </p>
-                <span className="font-semibold mb-1">{numStudios}</span>
-                <Chip size="sm" color="primary">
-                  +15.2%
-                </Chip>
-              </CardBody>
-            </Card>
+            <div className="grid grid-cols-2">
+              <Card className="rounded-none rounded-tl-lg">
+                <CardBody className="flex flex-col gap-1">
+                  <p className="text-sm flex justify-between">
+                    Users
+                    <Button size="sm" isIconOnly aria-label="More">
+                      <HiEllipsisVertical />
+                    </Button>
+                  </p>
+                  <span className="font-semibold mb-1">{numUsers}</span>
+                  <Chip size="sm" color="primary">
+                    +22%
+                  </Chip>
+                </CardBody>
+              </Card>
+              <Card className="rounded-none rounded-tr-lg">
+                <CardBody className="flex flex-col gap-1">
+                  <p className="text-sm flex justify-between">
+                    Bookings
+                    <Button size="sm" isIconOnly aria-label="More">
+                      <HiEllipsisVertical />
+                    </Button>
+                  </p>
+                  <span className="font-semibold mb-1">{numBookings}</span>
+                  <Chip size="sm" color="primary">
+                    +21%
+                  </Chip>
+                </CardBody>
+              </Card>
+              <Card className="rounded-none rounded-bl-lg">
+                <CardBody className="flex flex-col gap-1">
+                  <p className="text-sm flex justify-between">
+                    Revenue
+                    <Button size="sm" isIconOnly aria-label="More">
+                      <HiEllipsisVertical />
+                    </Button>
+                  </p>
+                  <span className="font-semibold mb-1">${revenue}</span>
+                  <Chip size="sm" color="primary">
+                    +12.6%
+                  </Chip>
+                </CardBody>
+              </Card>
+              <Card className="rounded-none rounded-br-lg">
+                <CardBody className="flex flex-col gap-1">
+                  <p className="text-sm flex justify-between">
+                    Studios
+                    <Button size="sm" isIconOnly aria-label="More">
+                      <HiEllipsisVertical />
+                    </Button>
+                  </p>
+                  <span className="font-semibold mb-1">{numStudios}</span>
+                  <Chip size="sm" color="primary">
+                    +15.2%
+                  </Chip>
+                </CardBody>
+              </Card>
+            </div>
           </div>
           <div className=" border shadow-md rounded-lg p-3">
             <h2 className="text-lg font-semibold mb-2">Bookings & Revenue</h2>

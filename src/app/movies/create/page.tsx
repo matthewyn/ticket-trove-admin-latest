@@ -28,6 +28,13 @@ export default function CreateMovie() {
     action(formData);
   };
 
+  const handleReset = () => {
+    const form = document.getElementById("create-form") as HTMLFormElement;
+    form.reset();
+    setNumInput([""]);
+    setValues(new Set([]));
+  };
+
   const content = numInput.map((_, i) => (
     <>
       <Input
@@ -54,8 +61,8 @@ export default function CreateMovie() {
         <h1 className="text-2xl font-bold">Create Movie</h1>
         <div className="grid grid-cols-[3fr_1fr] gap-8 items-start">
           <div>
-            <form className="flex flex-col gap-6" onSubmit={handleForm}>
-              <Input label="Title" labelPlacement="outside" name="title" placeholder="Ancika: Dia yang Bersamaku 1995" isRequired isInvalid={!!formState.errors.title} errorMessage={formState.errors.title} />
+            <form id="create-form" className="flex flex-col gap-6" onSubmit={handleForm}>
+              <Input label="Title" labelPlacement="outside" id="title" name="title" placeholder="Ancika: Dia yang Bersamaku 1995" isRequired isInvalid={!!formState.errors.title} errorMessage={formState.errors.title} />
               <Input label="Average ratings" labelPlacement="outside" type="number" name="ratingsAverage" placeholder="8" isRequired isInvalid={!!formState.errors.ratingsAverage} errorMessage={formState.errors.ratingsAverage} />
               <Input label="Ratings quantity" labelPlacement="outside" type="number" name="ratingsQuantity" placeholder="2" isRequired isInvalid={!!formState.errors.ratingsQuantity} errorMessage={formState.errors.ratingsQuantity} />
               <Textarea
@@ -165,7 +172,11 @@ export default function CreateMovie() {
               </div>
             </form>
           </div>
-          <div className="bg-emerald-200">Test</div>
+          <div className="flex flex-col gap-4">
+            <Button className="w-full" onClick={handleReset}>
+              Reset
+            </Button>
+          </div>
         </div>
       </div>
     </AppLayout>

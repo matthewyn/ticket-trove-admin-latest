@@ -8,6 +8,7 @@ import { HiMiniFilm } from "react-icons/hi2";
 import { usePathname } from "next/navigation";
 import { paths } from "@/paths";
 import Link from "next/link";
+import { HiClock } from "react-icons/hi";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -42,6 +43,17 @@ export default function AppLayout({ children }: AppLayoutProps) {
             href={paths.movies()}
           >
             Movies
+          </Button>
+          <Button
+            variant={path === paths.screenings() ? "flat" : "light"}
+            color={path === paths.screenings() ? "primary" : "default"}
+            className="w-full"
+            style={{ justifyContent: "start" }}
+            startContent={<HiClock />}
+            as={Link}
+            href={paths.screenings()}
+          >
+            Screenings
           </Button>
         </div>
       </div>

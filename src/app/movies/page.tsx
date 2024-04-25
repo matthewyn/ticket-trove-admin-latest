@@ -10,6 +10,7 @@ import MovieRatings from "@/components/movie-ratings";
 import { HiMiniPlus, HiTrash } from "react-icons/hi2";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { HiMiniPencil } from "react-icons/hi2";
 
 export default function Movies() {
   const [movies, setMovies] = useState<Movie[]>([] as Movie[]);
@@ -45,7 +46,12 @@ export default function Movies() {
               <MovieRatings rating={movie.ratingsAverage} />
             </TableCell>
             <TableCell>
-              <HiTrash size={16} onClick={() => handleDelete(movie.id)} className="cursor-pointer" />
+              <span className="flex gap-2">
+                <HiTrash size={16} onClick={() => handleDelete(movie.id)} className="cursor-pointer" />
+                <Link href={paths.updateMovie(movie.slug)}>
+                  <HiMiniPencil className="cursor-pointer" size={14} />
+                </Link>
+              </span>
             </TableCell>
           </TableRow>
         ))
